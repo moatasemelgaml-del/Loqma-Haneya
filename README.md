@@ -1,1 +1,0 @@
-# Loqma-Haneya
