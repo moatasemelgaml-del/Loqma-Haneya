@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لقمة هنية | اطلب بسهولة</title>
+<style>
+:root{--navy:#123b72;--blue:#2377d8;--sky:#eaf4ff;--ink:#18324f;--muted:#6d8198;--line:#d9e8f8;--white:#fff;--red:#d94444;--green:#16865b}
+*{box-sizing:border-box}body{margin:0;background:#f3f8ff;color:var(--ink);font-family:Tahoma,Arial,sans-serif}
+header{background:linear-gradient(125deg,#0d2e5d,#2377d8);color:white;padding:24px 5%;border-radius:0 0 28px 28px;box-shadow:0 8px 25px #123b7225}
+.top{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:13px}.logo{width:55px;height:55px;border-radius:18px;background:#fff;color:var(--blue);display:grid;place-items:center;font-size:29px;font-weight:bold}
+h1{margin:0;font-size:28px}header p{margin:6px 0 0;color:#d9eaff}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:11px 16px;font-weight:bold}
+.seller-open{background:white;color:var(--navy)}main{max-width:1100px;margin:24px auto;padding:0 16px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}.toolbar input,.toolbar select,.field{background:white;border:1px solid var(--line);border-radius:12px;padding:12px;color:var(--ink);outline:none}
+.toolbar input{flex:1;min-width:190px}.toolbar select{min-width:140px}
+.layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(280px,.9fr);gap:18px;align-items:start}
+.panel{background:white;border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 5px 20px #163f6b0a}
+.panel h2{margin:0 0 15px;font-size:20px}.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.product{border:1px solid var(--line);border-radius:16px;padding:14px;background:linear-gradient(180deg,#fff,#f8fbff)}
+.product-top{display:flex;justify-content:space-between;gap:8px;align-items:start}.product h3{margin:0;font-size:16px}.tag{font-size:12px;color:var(--blue);background:var(--sky);padding:5px 8px;border-radius:20px;white-space:nowrap}
+.price{font-size:19px;font-weight:bold;color:var(--navy);margin:15px 0 10px}.unit{font-size:12px;color:var(--muted);font-weight:normal}
+.add{background:var(--blue);color:white;width:100%}.cart-line{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #edf3fa;padding:11px 0}.cart-line:last-child{border:0}
+.qty{display:flex;align-items:center;gap:8px;margin-top:7px}.qty button{padding:4px 10px;background:var(--sky);color:var(--navy)}
+.total{display:flex;justify-content:space-between;font-size:19px;font-weight:bold;padding:16px 0;border-top:1px solid var(--line);margin-top:8px}
+.send{background:var(--navy);color:white;width:100%;margin-top:12px}.empty{color:var(--muted);text-align:center;padding:22px 5px}
+.seller-tools{display:none;background:#f0f7ff;border:1px dashed #8bb9ed;border-radius:14px;padding:12px;margin-bottom:14px}.seller-tools.active{display:block}
+.admin-row{display:grid;grid-template-columns:1fr 100px auto;gap:7px;margin:8px 0}.admin-row input{min-width:0;width:100%;padding:8px;border:1px solid var(--line);border-radius:9px}
+.delete{background:#fff0f0;color:var(--red);padding:8px 11px}.save{background:#dcecff;color:var(--navy);padding:8px 11px}
+.modal{display:none;position:fixed;inset:0;background:#0c244d88;z-index:10;align-items:center;justify-content:center;padding:16px}.modal.show{display:flex}.dialog{background:white;border-radius:20px;padding:22px;width:min(360px,100%);box-shadow:0 20px 60px #001b3e40}.dialog h2{margin-top:0}.dialog input{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;margin:8px 0 12px}.dialog-actions{display:flex;gap:8px}.dialog-actions button{flex:1}.cancel{background:#edf3fa;color:var(--ink)}.confirm{background:var(--blue);color:white}
+.notice{font-size:12px;color:var(--muted);line-height:1.7;margin-top:12px}
+footer{text-align:center;color:var(--muted);padding:25px 12px;font-size:12px}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.top{align-items:flex-start}h1{font-size:23px}.panel{padding:14px}}
+</style>
+</head>
+<body>
+<header><div class="top">
+ <div class="brand"><div class="logo">ل</div><div><h1>لقمة هنية</h1><p>اختار اللي تحبه… واطلبه بسهولة</p></div></div>
+ <button class="seller-open" onclick="openSeller()">دخول البائع 🔐</button>
+</div></header>
+<main>
+ <div class="toolbar">
+  <input id="search" placeholder="ابحث عن منتج..." oninput="renderProducts()">
+  <select id="category" onchange="renderProducts()">
+   <option value="الكل">كل الأقسام</option>
+   <option>صوصات</option>
+   <option>لحوم مجمدة</option>
+   <option>سمك</option>
+   <option>جبن</option>
+   <option>فراخ</option>
+  </select>
+  <select id="sort" onchange="renderProducts()"><option value="default">الترتيب الافتراضي</option><option value="name">الاسم</option><option value="price">السعر الأقل</option></select>
+ </div>
+ <div class="layout">
+  <section class="panel">
+   <h2>قائمة المنتجات</h2>
+   <div id="sellerTools" class="seller-tools">
+    <b>وضع البائع — تعديل المنتجات</b>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0">
+      <input id="newPassword" type="password" placeholder="كلمة المرور الجديدة" style="flex:1;min-width:150px;padding:9px;border:1px solid var(--line);border-radius:9px">
+      <button class="save" onclick="changePassword()">تغيير كلمة المرور</button>
+    </div>
+    <div id="adminList"></div>
+    <div class="admin-row">
+      <input id="newName" placeholder="اسم المنتج">
+      <input id="newPrice" type="number" min="0" placeholder="السعر">
+      <button class="save" onclick="addProduct()">إضافة</button>
+    </div>
+    <select id="newCategory" style="width:100%;padding:9px;border:1px solid var(--line);border-radius:9px;margin-bottom:8px">
+      <option>صوصات</option><option>لحوم مجمدة</option><option>سمك</option><option>جبن</option><option>فراخ</option>
+    </select>
+    <div class="notice">يمكنك تعديل السعر أو حذف المنتج. التغييرات محفوظة على هذا المتصفح فقط.</div>
+   </div>
+   <div id="products" class="products"></div>
+  </section>
+  <aside class="panel">
+   <h2>سلة طلبك 🛒</h2><div id="cart"></div>
+   <div class="total"><span>الإجمالي</span><span id="total">0 جنيه</span></div>
+   <button class="send" onclick="submitOrder()">تجهيز الطلب</button>
+   <div class="notice">اضغط «تجهيز الطلب» لنسخ قائمة المنتجات والكميات والإجمالي فقط، بدون أي بيانات شخصية.</div>
+  </aside>
+ </div>
+</main>
+<footer>لقمة هنية • نتمنى لكم وجبة سعيدة</footer>
+
+<div class="modal" id="loginModal"><div class="dialog">
+ <h2>دخول البائع</h2><p>اكتب كلمة المرور لفتح أدوات تعديل المنتجات.</p>
+ <input id="password" type="password" placeholder="كلمة المرور" onkeydown="if(event.key==='Enter')checkPassword()">
+ <div class="dialog-actions"><button class="cancel" onclick="closeLogin()">إلغاء</button><button class="confirm" onclick="checkPassword()">دخول</button></div>
+ <p id="loginError" style="color:#d94444;font-size:13px"></p>
+</div></div>
+<script>
+const defaultProducts=[
+{id:1,name:"كاتشب",category:"صوصات",price:35,unit:"عبوة"},
+{id:2,name:"مايونيز",category:"صوصات",price:45,unit:"عبوة"},
+{id:3,name:"مستردة",category:"صوصات",price:40,unit:"عبوة"},
+{id:4,name:"باربكيو",category:"صوصات",price:55,unit:"عبوة"},
+{id:5,name:"هوت صوص",category:"صوصات",price:40,unit:"عبوة"},
+{id:6,name:"رانش",category:"صوصات",price:50,unit:"عبوة"},
+{id:7,name:"ثومية",category:"صوصات",price:45,unit:"عبوة"},
+{id:8,name:"برجر لحمة",category:"لحوم مجمدة",price:220,unit:"كيلو"},
+{id:9,name:"كفتة",category:"لحوم مجمدة",price:240,unit:"كيلو"},
+{id:10,name:"سجق",category:"لحوم مجمدة",price:210,unit:"كيلو"},
+{id:11,name:"لحم مفروم",category:"لحوم مجمدة",price:320,unit:"كيلو"},
+{id:12,name:"شيش طاووق",category:"لحوم مجمدة",price:230,unit:"كيلو"},
+{id:13,name:"بانيه",category:"لحوم مجمدة",price:190,unit:"كيلو"},
+{id:14,name:"ناجتس",category:"لحوم مجمدة",price:180,unit:"كيلو"}
+];
+let products=JSON.parse(localStorage.getItem("lh_products_v2")||"null")||defaultProducts;
+let cart={};let seller=false;
+function persist(){localStorage.setItem("lh_products_v2",JSON.stringify(products))}
+function money(n){return Number(n).toLocaleString("ar-EG")+" جنيه"}
+function renderProducts(){
+ let q=document.getElementById("search").value.trim().toLowerCase(),cat=document.getElementById("category").value,sort=document.getElementById("sort").value;
+ let arr=products.filter(p=>(cat==="الكل"||p.category===cat)&&p.name.toLowerCase().includes(q));
+ if(sort==="name")arr.sort((a,b)=>a.name.localeCompare(b.name,"ar"));if(sort==="price")arr.sort((a,b)=>a.price-b.price);
+ document.getElementById("products").innerHTML=arr.length?arr.map(p=>`<article class="product"><div class="product-top"><h3>${esc(p.name)}</h3><span class="tag">${esc(p.category)}</span></div><div class="price">${money(p.price)} <span class="unit">/ ${esc(p.unit)}</span></div><button class="add" onclick="addToCart(${p.id})">أضف للسلة</button></article>`).join(""):'<div class="empty">لا توجد منتجات مطابقة للبحث.</div>';
+}
+function renderCart(){
+ let ids=Object.keys(cart).filter(id=>cart[id]>0),sum=0;
+ document.getElementById("cart").innerHTML=ids.length?ids.map(id=>{let p=products.find(x=>x.id==id);if(!p)return "";let sub=p.price*cart[id];sum+=sub;return `<div class="cart-line"><div><b>${esc(p.name)}</b><div class="qty"><button onclick="changeQty(${id},-1)">−</button><span>${cart[id]}</span><button onclick="changeQty(${id},1)">+</button></div></div><b>${money(sub)}</b></div>`}).join(""):'<div class="empty">السلة لسه فاضية</div>';
+ document.getElementById("total").textContent=money(sum);
+}
+function addToCart(id){cart[id]=(cart[id]||0)+1;renderCart()}
+function changeQty(id,d){cart[id]=(cart[id]||0)+d;if(cart[id]<=0)delete cart[id];renderCart()}
+function openSeller(){document.getElementById("loginModal").classList.add("show");document.getElementById("password").value="";document.getElementById("loginError").textContent=""}
+function closeLogin(){document.getElementById("loginModal").classList.remove("show")}
+function getSellerPassword(){return localStorage.getItem("lh_seller_password")||"123456"}
+function checkPassword(){if(document.getElementById("password").value===getSellerPassword()){seller=true;closeLogin();document.getElementById("sellerTools").classList.add("active");document.querySelector(".seller-open").textContent="إغلاق وضع البائع";document.querySelector(".seller-open").onclick=closeSeller;renderAdmin()}else document.getElementById("loginError").textContent="كلمة المرور غير صحيحة"}
+function changePassword(){
+ if(!seller)return;
+ let next=document.getElementById("newPassword").value;
+ if(!next.trim()){alert("اكتب كلمة المرور الجديدة أولًا");return}
+ if(next.length<4){alert("كلمة المرور يجب أن تكون 4 أحرف أو أرقام على الأقل");return}
+ localStorage.setItem("lh_seller_password",next);
+ document.getElementById("newPassword").value="";
+ alert("تم تغيير كلمة المرور بنجاح. استخدمها في تسجيل الدخول القادم.");
+}
+function closeSeller(){seller=false;document.getElementById("sellerTools").classList.remove("active");document.querySelector(".seller-open").textContent="دخول البائع 🔐";document.querySelector(".seller-open").onclick=openSeller}
+function renderAdmin(){document.getElementById("adminList").innerHTML=products.map(p=>`<div class="admin-row"><input aria-label="اسم المنتج" value="${esc(p.name)}" onchange="renameProduct(${p.id},this.value)"><input aria-label="السعر" type="number" min="0" value="${p.price}" onchange="changePrice(${p.id},this.value)"><button class="delete" onclick="deleteProduct(${p.id})">احذف</button></div>`).join("")}
+function changePrice(id,val){let n=Number(val);if(!Number.isFinite(n)||n<0){alert("اكتب سعرًا صحيحًا");renderAdmin();return}let p=products.find(x=>x.id===id);if(p)p.price=n;persist();renderProducts();renderCart()}
+function renameProduct(id,val){let p=products.find(x=>x.id===id);if(p&&val.trim()){p.name=val.trim();persist();renderProducts()}}
+function deleteProduct(id){let p=products.find(x=>x.id===id);if(!p)return;if(confirm("هل تريد حذف "+p.name+"؟")){products=products.filter(x=>x.id!==id);delete cart[id];persist();renderAdmin();renderProducts();renderCart()}}
+function addProduct(){let name=document.getElementById("newName").value.trim(),price=Number(document.getElementById("newPrice").value);if(!name||!Number.isFinite(price)||price<0){alert("اكتب اسم المنتج وسعرًا صحيحًا");return}let category=document.getElementById("newCategory").value;let unit=category==="صوصات"||category==="جبن"?"عبوة":"كيلو";products.push({id:Date.now(),name,category,price,unit});persist();document.getElementById("newName").value="";document.getElementById("newPrice").value="";renderAdmin();renderProducts()}
+function submitOrder(){
+ let ids=Object.keys(cart).filter(id=>cart[id]>0);
+ if(!ids.length){alert("أضف منتجًا واحدًا على الأقل للسلة");return}
+ let lines=ids.map(id=>{
+   let p=products.find(x=>x.id==id);
+   return p?`${p.name} × ${cart[id]} = ${p.price*cart[id]} جنيه`:"";
+ }).filter(Boolean);
+ let total=ids.reduce((s,id)=>{
+   let p=products.find(x=>x.id==id);
+   return s+(p?p.price*cart[id]:0);
+ },0);
+ let msg=`طلب لقمة هنية\\n\\n${lines.join("\\n")}\\n\\nالإجمالي: ${total} جنيه`;
+ if(navigator.clipboard&&navigator.clipboard.writeText){
+   navigator.clipboard.writeText(msg).then(
+     ()=>alert("تم نسخ الطلب: المنتجات والكميات والإجمالي فقط."),
+     ()=>prompt("انسخ الطلب:",msg)
+   );
+ }else{
+   prompt("انسخ الطلب:",msg);
+ }
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+renderProducts();renderCart();
+</script>
+</body></html>
